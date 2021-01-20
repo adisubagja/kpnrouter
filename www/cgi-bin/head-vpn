@@ -1,0 +1,53 @@
+#!/bin/sh
+
+
+
+echo Content-type: text/html
+echo
+SHOWDATE=`date +"%B %d, %Y %I:%M:%S %p"`
+DOWNLOAD=`ifconfig tun0 2> /dev/null | grep "RX bytes" |  busybox awk '{print $3,$4}' | busybox tr -d '()'`
+UPLOAD=`ifconfig tun0 2> /dev/null | grep "RX bytes" |  busybox awk '{print $7,$8}' | busybox tr -d '()'`
+DEVICEIP=`ip addr show wan0 | grep inet | busybox awk '{print $4}'`
+VPNIP=`ifconfig tun0 | grep "inet addr:" | busybox cut -d: -f2 | busybox awk '{print $1}'`
+SYSINFO=`cat /tmp/sysinfo/model`
+VPNIP2=`cat /tmp/openvpn.log | grep OpenVPN`
+VPNIP3=`cat /tmp/openvpn.log | grep AUTH_FAILED`
+VPNIP4=`cat /tmp/openvpn.log | grep RESOLVE:`
+ACCOUNT=`busybox head -1 /etc/openvpn/account.txt`
+NETWORK=`grep sun /etc/openvpn/server.ovpn`
+SERVER=`grep vpnrouter /etc/openvpn/server.ovpn`
+echo "<font size="1" color="green">UL:$UPLOAD  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  DL:$DOWNLOAD</font><br>"
+echo "<font size="1" color="blue"> $SHOWDATE</font><br>"
+echo "<font size="1" color="blue"> $SYSINFO</font><br>"
+echo "<font size="1" color="green">OWNER : $ACCOUNT</font><br>"
+OPENVPNSTATUS=`pgrep openvpn`
+
+if [ -n "$VPNIP" ]; then
+echo " <font size="1" color="#0faf15">CONNECTED</font>"
+
+else
+if [ -n "$VPNIP4" ]; then
+echo " <font size="1" color="white"><span class="blinking2">MODEM NOT DETECTED&#9888;</span></font>"
+else
+
+
+
+if [ -n "$VPNIP3" ]; then
+echo " <font size="1" color="white">ACCOUNT EXPIRED</font>"
+else
+
+if [ -n "$OPENVPNSTATUS" ]; then
+echo " <font size="1" color="#f44141"><span class="blinking"> CONNECTING.....</span></font>"
+
+
+
+else 
+echo " <font size="1" color="#f44141">DISCONNECTED</font>"
+
+
+
+fi
+fi
+fi
+fi
+

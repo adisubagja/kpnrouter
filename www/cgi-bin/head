@@ -1,0 +1,51 @@
+#!/bin/sh
+
+
+
+echo Content-type: text/html
+echo
+SHOWDATE=`date +"%B %d, %Y %I:%M:%S %p"`
+DOWNLOAD=`ifconfig lo 2> /dev/null | grep "RX bytes" |  busybox awk '{print $3,$4}' | busybox tr -d '()'`
+UPLOAD=`ifconfig lo 2> /dev/null | grep "RX bytes" |  busybox awk '{print $7,$8}' | busybox tr -d '()'`
+DEVICEIP=`ip addr show wan0 | grep inet | busybox awk '{print $4}'`
+VPNIP=`cat /tmp/screenlog.0 | grep CONNECT`
+SYSINFO=`cat /tmp/sysinfo/model`
+VPNIP3=`cat /tmp/screenlog.0 | grep ENDED`
+VPNIP4=`ls | /tmp/screenlog.0`
+echo "<font size="1" color="black">UL:$UPLOAD  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  DL:$DOWNLOAD</font>"
+echo "<font size="1" color="black"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $SHOWDATE</font>"
+echo "<font size="1" color="black"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $SYSINFO</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+
+OPENVPNSTATUS=`/tmp/screenlog.0 | grep listening`
+
+if [ -n "$VPNIP" ]; then
+echo " <font size="4" color="green">CONNECTED</font>"
+
+else
+if [ -n "$VPNIP4" ]; then
+echo " <font size="1" color="red"><span class="blinking2">MODEM NOT DETECTED&#9888;</span></font>"
+else
+
+
+
+if [ -n "$VPNIP4" ]; then
+echo " <font size="4" color="black">INJECTING PLS WAIT</font>"
+else
+
+if [ -n "$OPENVPNSTATUS" ]; then
+echo " <font size="4" color="#f44141"><span class="blinking"> CONNECTING.....</span></font>"
+
+
+
+else 
+
+echo " <font size="4" color="#f44141">DISCONNECTED</font>"
+
+
+fi
+fi
+fi
+fi
+fi
+fi
+
