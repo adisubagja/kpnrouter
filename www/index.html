@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>HTTP/KPN router</title>
+  
+ 
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+    <link rel="stylesheet" href="css/style.css">
+  <script src="/js/jquery.min.js"></script>
+ 
+  
+</head>
+
+
+<body>
+
+
+    
+
+
+<script>
+
+
+$(document).ready(function () {
+	var t = $("#sshname").val();
+	$.ajax({
+		type: "GET",
+		url: "/cgi-bin/sshname.cgi",
+		success: function (t) {
+			$("#ssh-name").val(t)
+		}
+	})
+});
+$(document).ready(function () {
+	var t = $("#sshpass").val();
+	$.ajax({
+		type: "GET",
+		url: "/cgi-bin/sshpass.cgi",
+		success: function (t) {
+			$("#ssh-pass").val(t)
+		}
+	})
+});
+
+$(document).ready(function () {
+	var t = $("#sshpayload").val();
+	$.ajax({
+		type: "GET",
+		url: "/cgi-bin/host.cgi",
+		success: function (t) {
+			$("#host").val(t)
+		}
+	})
+});
+$(document).ready(function () {
+	var t = $("#sshipaddress").val();
+	$.ajax({
+		type: "GET",
+		url: "/cgi-bin/sshipaddress.cgi",
+		success: function (t) {
+			$("#ssh-ipaddress").val(t)
+		}
+	})
+});
+$(document).ready(function () {
+	var t = $("#sshport").val();
+	$.ajax({
+		type: "GET",
+		url: "/cgi-bin/sshport.cgi",
+		success: function (t) {
+			$("#ssh-port").val(t)
+		}
+	})
+});
+$(document).ready(function () {
+	var t = $("#sshsquid").val();
+	$.ajax({
+		type: "GET",
+		url: "/cgi-bin/sshsquid.cgi",
+		success: function (t) {
+			$("#squid").val(t)
+		}
+	})
+});
+$(document).ready(function () {
+	var t = $("#sshsquidport").val();
+	$.ajax({
+		type: "GET",
+		url: "/cgi-bin/squidport.cgi",
+		success: function (t) {
+			$("#squid-port").val(t)
+		}
+	})
+});
+$(document).ready(function () {
+	var t = $("#sshsni").val();
+	$.ajax({
+		type: "GET",
+		url: "/cgi-bin/sshsni.cgi",
+		success: function (t) {
+			$("#ssh-sni").val(t)
+		}
+	})
+});
+$(document).ready(function () {
+	var t = $("#sslport").val();
+	$.ajax({
+		type: "GET",
+		url: "/cgi-bin/ssl_port.cgi",
+		success: function (t) {
+			$("#port-ssl").val(t)
+		}
+	})
+});
+
+
+$(document).ready(function () {
+	var id = $("#selectId option:selected").attr("id");
+	$.ajax({
+		type: "GET",
+		url: "/cgi-bin/choose.cgi",
+		success: function (t) {
+			$("#choose-tunnel").val(t)
+		}
+	})
+});
+
+
+
+
+
+            setInterval(function() {
+                $('#logs').load('/cgi-bin/ovpnlogs.cgi');
+            }, 1000);
+  setInterval(function() {
+                $('#infos').load('/cgi-bin/head');
+            }, 1000);
+            
+ function connect() {
+                $.get('/cgi-bin/ovpnstart.cgi', function(data) {
+                    alert(data);
+                });
+            }
+
+ function disconnect() {
+                $.get('/cgi-bin/ovpnstop.cgi', function(data) {
+                    alert(data);
+                });
+            }
+
+   
+
+
+       
+
+
+
+
+
+        </script>
+
+<center>
+
+
+<h>ROUTER TUNNEL INJECTOR</h>
+</div>
+
+      <script  src="js/index.js"></script>
+	<div style="background-color:; background-size: cover; background-repeat: no-repeat; height: 720px; width: 530px; border: 1px solid black;">
+<b><div class="box">  <div id ="demotext4"><text id="infos"></b>
+
+</text>
+<br />
+
+
+
+          <form action="/cgi-bin/upload.cgi" method="post" enctype="multipart/form-data">
+
+         <font color="">payload account settings</font><br />
+
+ 
+    
+  <input type="text" name="sshipaddress"  id="ssh-ipaddress" placeholder="IPADDRESS">      
+
+ <input type="text" name="sshport"  id="ssh-port" placeholder="SSH PORTS"><br />  
+
+<input type="text"  name="sshname" id="ssh-name" placeholder="USER">  
+     
+ <input type="text"   name="sshpass" id="ssh-pass" placeholder="PASS"><br />  
+ 
+ <input type="text"   name="sshsquid" id="squid" placeholder="SQUID">   
+
+<input type="text"  id="squid-port" name="username" placeholder="PORT" >  
+
+<br />
+
+<input type="text" name="sshsni"  id="ssh-sni" placeholder="SNI">   <input type="text" name="sslport"  id="port-ssl" placeholder="SNI-PORT" >  
+<br />
+
+
+
+   <textarea id="host" name="sshpayload" style="color:black;width:400px;height:50px; background-color:white;" ></textarea><br />  
+
+
+
+</div>
+
+
+
+
+						
+</font>
+<input type="submit"  value="Submit" onclick="alert('Save successfully!')">
+
+</form>  
+<br />
+<form action="/cgi-bin/select.cgi" method="post" enctype="multipart/form-data">
+ <div id="list-ssh">
+                    <select title="Select Mode" class="text" name="config"></select>
+                  </div>
+
+<br />
+
+
+<input type="submit" value=" SAVE" class="" value="Submit" onclick="alert('Save successfully!')">
+</form>    
+<br />
+
+ <br /> 
+ <center><input type="button" onclick="javascript:connect()" value="START"></text><text id="ovpnbutton">&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp<input type="button" onclick="javascript:disconnect()" value="STOP"></center>
+<br />
+  logs
+<textarea id="logs" style="color:black;width:500px;height:100px;font-size:15pt; background-color: white;" readonly></textarea>
+
+ 
+ <br /> 
+
+
+
+</div>
+
+
+
+
+</center>
+</body>
+
+
+ <script type="text/javascript">
+            $("#list-ssh").load("/cgi-bin/showlist.cgi");
+          </script>
+
+<
+
+
+
+
+
+
+
+</html>
