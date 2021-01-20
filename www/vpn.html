@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>HTTP/KPN router</title>
+  
+ 
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+    <link rel="stylesheet" href="css/style.css">
+  <script src="/js/jquery.min.js"></script>
+ 
+  
+</head>
+
+
+<body>
+
+
+    
+
+
+<script>
+
+
+$(document).ready(function () {
+	var t = $("#vpnusername").val();
+	$.ajax({
+		type: "GET",
+		url: "/cgi-bin/vpnusername.cgi",
+		success: function (t) {
+			$("#vpn-username").val(t)
+		}
+	})
+});
+$(document).ready(function () {
+	var t = $("#vpnpassword").val();
+	$.ajax({
+		type: "GET",
+		url: "/cgi-bin/vpnpassword.cgi",
+		success: function (t) {
+			$("#vpn-password").val(t)
+		}
+	})
+});
+
+
+$(document).ready(function () {
+	var id = $("#selectId option:selected").attr("id");
+	$.ajax({
+		type: "GET",
+		url: "/cgi-bin/choose.cgi",
+		success: function (t) {
+			$("#choose-tunnel").val(t)
+		}
+	})
+});
+
+
+
+
+
+            setInterval(function() {
+                $('#vpnlogs').load('/cgi-bin/ovpn-logs.cgi');
+            }, 1000);
+  setInterval(function() {
+                $('#infos').load('/cgi-bin/head-vpn');
+            }, 1000);
+            
+ function openvpnconnect() {
+                $.get('/cgi-bin/vpnstart.cgi', function(data) {
+                    alert(data);
+                });
+            }
+
+ function openvpndisconnect() {
+                $.get('/cgi-bin/vpnstop.cgi', function(data) {
+                    alert(data);
+                });
+            }
+
+   
+
+
+           
+
+            window.setInterval(function() {
+                var elem = document.getElementById('logs');
+                elem.scrollTop = elem.scrollHeight;
+            }, 100);
+		
+
+
+
+
+
+
+
+
+        </script>
+
+<center>
+
+
+<h>VPN TUNNEL</h>
+
+
+      <script  src="js/index.js"></script>
+	<div style="background-color:; background-size: cover; background-repeat: no-repeat; height: 720px; width: 530px; border: 1px solid black;">
+<b><div class="box">  <div id ="demotext4">
+<text id="infos"></b>
+</text>
+<br />
+
+
+
+          <form action="/cgi-bin/vpn-upload.cgi" method="post" enctype="multipart/form-data">
+
+         <font color="">account and settings</font><br />
+
+ 
+    
+  <input type="text" name="vpnusername"  id="vpn-username" placeholder="username">      
+
+ <input type="text" name="vpnpassword"  id="vpn-password" placeholder="password">
+
+<br />
+</div>
+
+
+
+
+						
+</font>
+<input type="submit"  value="Submit" onclick="alert('Save successfully!')">
+
+</form>  
+<br />
+<form action="/cgi-bin/select-vpn.cgi" method="post" enctype="multipart/form-data">
+ <div id="list-vpn">
+                    <select title="Select Mode" class="text" name="config-vpn"></select>
+                  </div>
+
+<br />
+
+
+<input type="submit" value=" SAVE" class="" value="Submit" onclick="alert('Save successfully!')">
+</form>    
+<br />
+
+ <br /> 
+ <center><input type="button" onclick="javascript:vpnconnect()" value="START"></text><text id="ovpnbutton">&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp<input type="button" onclick="javascript:vpndisconnect()" value="STOP"></center>
+<br />
+  logs
+<textarea id="logs" style="color:black;width:500px;height:100px;font-size:15pt; background-color: white;" readonly></textarea>
+
+ 
+ <br /> 
+
+
+
+</div>
+
+
+
+
+</center>
+</body>
+
+
+ <script type="text/javascript">
+            $("#list-vpn").load("/cgi-bin/show-vpnlist.cgi");
+          </script>
+
+<
+
+
+
+
+
+
+
+</html>
